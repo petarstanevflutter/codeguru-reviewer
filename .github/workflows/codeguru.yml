@@ -19,8 +19,8 @@ jobs:
       continue-on-error: false
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        role-to-assume: arn:aws:iam::542339004362:role/codegurus3
-        aws-region: eu-north-1
+        role-to-assume: ${{ secrets.AWS_ROLE }}
+        aws-region: ${{ secrets.AWS_REGION }}
 
     - name: Check out repository
       uses: actions/checkout@v2
@@ -37,7 +37,7 @@ jobs:
       if: steps.assume-iam-role.outcome == 'success'
       continue-on-error: false
       with:
-        s3_bucket: codeguru-reviewer-testgithub
+        s3_bucket: ${{ secrets.AWS_S3_BUCKET }}
 
     - name: Upload SARIF file to workflow artifacts
       if: steps.assume-iam-role.outcome == 'success' && steps.analysis.outcome == 'success'
